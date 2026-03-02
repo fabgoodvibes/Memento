@@ -1,0 +1,14 @@
+# OpenClaw local config and state
+openclaw.json
+.openclaw/
+*.sqlite
+*.gguf
+
+# Secrets
+*.env
+.env*
+
+# Editor
+.DS_Store
+.vscode/
+*.swp

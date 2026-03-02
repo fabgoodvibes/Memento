@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memento — Memory for OpenClaw Agents</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#10110f;--paper:#f5f0e8;--cream:#ede7d6;
+  --amber:#c8820a;--amber-l:#e9a92a;--amber-d:#7a4e04;
+  --rule:rgba(0,0,0,0.12);--muted:#7a7060;--dim:#b0a890;
+  --yes:#2a7a3a;--no:#c0bab0;--partial:#8a6a10;
+  --display:'Barlow Condensed',sans-serif;--mono:'DM Mono',monospace;
+}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--display);-webkit-font-smoothing:antialiased}
+.page{width:1080px;margin:0 auto;padding:44px 52px 40px;display:grid;grid-template-rows:auto 1fr auto;gap:0}
+header{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:2.5px solid var(--ink);margin-bottom:26px}
+.logo{font-size:68px;font-weight:800;letter-spacing:-0.02em;line-height:1;color:var(--ink)}
+.logo em{font-style:normal;color:var(--amber)}
+.tagline{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px}
+.header-pills{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.pill{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:2px;background:var(--ink);color:var(--amber-l)}
+.pill.outline{background:transparent;border:1px solid var(--dim);color:var(--muted)}
+.body-grid{display:grid;grid-template-columns:1fr 314px;gap:30px;align-items:start}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.section-head h2{font-size:10.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber-d);white-space:nowrap}
+.section-head::after{content:'';flex:1;height:1px;background:var(--rule)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead tr{border-bottom:2px solid var(--ink)}
+thead th{font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:0.04em;padding:7px 9px 9px;text-align:center;vertical-align:bottom;color:var(--ink)}
+thead th.feat-col{text-align:left;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-left:0}
+thead th.ours{background:var(--ink);color:var(--amber-l);border-radius:4px 4px 0 0;font-size:12.5px;letter-spacing:0.02em}
+.th-sub{display:block;font-family:var(--mono);font-size:8.5px;font-weight:400;color:var(--dim);letter-spacing:0.05em;margin-top:2px}
+thead th.ours .th-sub{color:rgba(233,169,42,0.6)}
+tbody tr{border-bottom:1px solid var(--rule)}
+tbody tr:hover{background:rgba(200,130,10,0.03)}
+tbody tr.group-head td{padding-top:12px;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);border-bottom:none;padding-bottom:2px}
+tbody td{padding:6px 9px;vertical-align:middle}
+tbody td.feat-col{font-weight:600;font-size:12.5px;padding-left:0;color:var(--ink)}
+.feat-note{font-family:var(--mono);font-size:9.5px;color:var(--dim);font-weight:300;display:block;margin-top:1px}
+tbody td.ours{background:rgba(200,130,10,0.05);text-align:center}
+tbody td.other{text-align:center;color:var(--muted)}
+.y{color:var(--yes);font-size:14px;font-weight:800}
+.n{color:var(--no);font-size:13px;font-weight:400}
+.p{color:var(--partial);font-size:12px;font-weight:700}
+tbody tr.best-use td{padding:9px 9px;vertical-align:top;border-bottom:2px solid var(--ink);border-top:1px solid rgba(0,0,0,0.18)}
+tbody tr.best-use td.feat-col{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.best-label{font-family:var(--mono);font-size:9.5px;line-height:1.55;color:var(--muted);font-style:italic}
+td.ours .best-label{color:var(--amber-d);font-style:normal;font-weight:400}
+.rules-col{display:flex;flex-direction:column;gap:0}
+.rules-block{border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;margin-bottom:22px}
+.rules-block-head{background:var(--ink);color:var(--amber-l);font-family:var(--mono);font-size:9.5px;letter-spacing:0.18em;text-transform:uppercase;padding:7px 13px}
+.rule-row{display:flex;gap:11px;padding:9px 13px;border-bottom:1px solid var(--rule);align-items:flex-start}
+.rule-row:last-child{border-bottom:none}
+.rule-n{font-family:var(--mono);font-size:10px;color:var(--amber);min-width:14px;padding-top:1px}
+.rule-title{font-size:12.5px;font-weight:700;color:var(--ink);line-height:1.2}
+.rule-desc{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.rule-src{font-family:var(--mono);font-size:8.5px;color:var(--dim);margin-top:3px}
+.stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:22px}
+.stack-item{background:var(--cream);border:1px solid var(--rule);border-radius:3px;padding:8px 10px}
+.si-label{font-family:var(--mono);font-size:8.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
+.si-val{font-size:12px;font-weight:700;color:var(--ink);line-height:1.3}
+.si-note{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:2px}
+.source-credit{font-family:var(--mono);font-size:9.5px;color:var(--dim);padding:8px 12px;background:var(--cream);border:1px solid var(--rule);border-radius:3px;line-height:1.75}
+.source-credit strong{color:var(--amber-d);font-weight:400}
+footer{display:flex;justify-content:space-between;align-items:center;border-top:1.5px solid var(--rule);padding-top:13px;margin-top:24px}
+footer .f-left,.footer .f-right{font-family:var(--mono);font-size:9.5px;color:var(--dim)}
+footer a{color:var(--amber-d);text-decoration:none}
+.legend{display:flex;gap:16px;margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div>
+    <div class="logo">Mem<em>ento</em></div>
+    <div class="tagline">persistent memory layer for OpenClaw agents &nbsp;·&nbsp; zero external APIs &nbsp;·&nbsp; fully local</div>
+  </div>
+  <div class="header-pills">
+    <div class="pill">nomic-embed + sqlite-vec + BM25</div>
+    <div class="pill outline">node-llama-cpp · memory-manager · SOUL protocol</div>
+  </div>
+</header>
+
+<div class="body-grid">
+
+  <!-- LEFT -->
+  <div>
+    <!-- COMPARISON -->
+    <div class="section-head"><h2>Feature Comparison</h2></div>
+    <div class="legend">
+      <div class="legend-item"><span class="y">✓</span> supported</div>
+      <div class="legend-item"><span class="p">◑</span> partial / limited</div>
+      <div class="legend-item"><span class="n">–</span> not available</div>
+    </div>
+    <table style="margin-bottom:22px">
+      <thead>
+        <tr>
+          <th class="feat-col"></th>
+          <th class="ours">Memento<span class="th-sub">this project</span></th>
+          <th>memory-core<span class="th-sub">OpenClaw built-in</span></th>
+          <th>memory-lancedb<span class="th-sub">OpenClaw built-in</span></th>
+          <th>rosepuppy<span class="th-sub">memory-complete</span></th>
+          <th>Mem0<span class="th-sub">SaaS / OSS</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group-head"><td colspan="6">Privacy &amp; dependencies</td></tr>
+        <tr>
+          <td class="feat-col">No external API key<span class="feat-note">embeddings &amp; memory ops</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="y">✓</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">No external daemons or services<span class="feat-note">no Ollama, Qdrant, SaaS</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="y">✓</span></td>
+          <td class="other"><span class="y">✓</span></td><td class="other"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Fully local — data stays on machine</td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="y">✓</span></td>
+          <td class="other"><span class="p">◑</span></td><td class="other"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+        </tr>
+        <tr class="group-head"><td colspan="6">Retrieval quality</td></tr>
+        <tr>
+          <td class="feat-col">Semantic / vector search</td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Hybrid search (vector + BM25)<span class="feat-note">70 / 30 weighted fusion</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="n">–</span></td><td class="other"><span class="p">◑</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Conflict-free writes<span class="feat-note">ADD / UPDATE / DELETE / NOOP</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td>
+        </tr>
+        <tr class="group-head"><td colspan="6">Agent protocol</td></tr>
+        <tr>
+          <td class="feat-col">Knows <em>when</em> to write<span class="feat-note">explicit protocol, not just tools</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td><td class="other"><span class="p">◑</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Crash &amp; restart recovery<span class="feat-note">SESSION-STATE hot RAM</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Always-open session support<span class="feat-note">no "goodbye" trigger needed</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="p">◑</span></td><td class="other"><span class="n">–</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Three-tier memory routing<span class="feat-note">episodic / semantic / procedural</span></td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="n">–</span></td><td class="other"><span class="p">◑</span></td><td class="other"><span class="p">◑</span></td>
+        </tr>
+        <tr>
+          <td class="feat-col">Multi-agent shared memory</td>
+          <td class="ours"><span class="y">✓</span></td><td class="other"><span class="n">–</span></td>
+          <td class="other"><span class="p">◑</span></td><td class="other"><span class="n">–</span></td><td class="other"><span class="y">✓</span></td>
+        </tr>
+        <tr class="best-use">
+          <td class="feat-col">Best for</td>
+          <td class="ours"><div class="best-label">Private dev · always-on sessions · crash resilience · zero API keys · single machine</div></td>
+          <td class="other"><div class="best-label">Instant start, keyword recall only, no setup</div></td>
+          <td class="other"><div class="best-label">Cloud embeddings OK, want vector with no config</div></td>
+          <td class="other"><div class="best-label">Protocol-first, Python fine, offline but not on ClawHub yet</div></td>
+          <td class="other"><div class="best-label">Enterprise scale, SaaS acceptable, privacy secondary</div></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- STACK -->
+    <div class="section-head"><h2>Core Stack</h2></div>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="si-label">Embeddings</div>
+        <div class="si-val">nomic-embed-text-v1.5</div>
+        <div class="si-note">Q4_K_M GGUF · 130 MB · in-process via node-llama-cpp · no daemon</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-label">Vector + Keyword store</div>
+        <div class="si-val">SQLite + sqlite-vec + FTS5</div>
+        <div class="si-note">768-dim cosine · BM25 · 50K embedding cache · zero extra services</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-label">Memory organisation</div>
+        <div class="si-val">memory-manager skill</div>
+        <div class="si-note">bash only · jq dep · 🟢 SAFE (skill-guard vetted)</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-label">Plugin slot</div>
+        <div class="si-val">memory-core (native)</div>
+        <div class="si-note">memory_search + memory_get tools · OpenClaw built-in</div>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="section-head"><h2>Protocol Design Sources</h2></div>
+    <div class="source-credit">
+      <strong>rosepuppy / memory-complete</strong> — write-ahead rule · SESSION-STATE.md hot RAM · heartbeat cadence · RECENT_CONTEXT rolling summary<br>
+      <strong>Mem0 research (ECAI 2025 · arXiv:2504.19413)</strong> — ADD / UPDATE / DELETE / NOOP two-phase write pipeline · rolling summary concept<br>
+      <strong>memory-manager (ClawHub)</strong> — episodic / semantic / procedural tier routing · compression snapshots
+    </div>
+  </div>
+
+  <!-- RIGHT: rules + benchmark -->
+  <div class="rules-col">
+    <div class="section-head"><h2>Agent Protocol — SOUL.md</h2></div>
+    <div class="rules-block">
+      <div class="rules-block-head">5 Mandatory Rules</div>
+      <div class="rule-row">
+        <div class="rule-n">0</div>
+        <div>
+          <div class="rule-title">Read first, always</div>
+          <div class="rule-desc">On session start: read SESSION-STATE.md then RECENT_CONTEXT.md before anything else. Instant re-orientation after crashes.</div>
+          <div class="rule-src">→ rosepuppy SESSION-STATE pattern</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-n">1</div>
+        <div>
+          <div class="rule-title">Write-ahead rule</div>
+          <div class="rule-desc">User gives a concrete fact, correction, or decision → update SESSION-STATE.md before responding. Never after.</div>
+          <div class="rule-src">→ rosepuppy write-ahead log</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-n">2</div>
+        <div>
+          <div class="rule-title">ADD / UPDATE / DELETE / NOOP</div>
+          <div class="rule-desc">Before writing to semantic/ — search first, then: add new, supplement existing, remove contradicted, or skip if already there.</div>
+          <div class="rule-src">→ Mem0 two-phase write pipeline</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-n">3</div>
+        <div>
+          <div class="rule-title">Tier routing</div>
+          <div class="rule-desc">Facts → semantic/ &nbsp; Steps → procedural/ &nbsp; Events → episodic/YYYY-MM-DD.md</div>
+          <div class="rule-src">→ memory-manager three-tier</div>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-n">4</div>
+        <div>
+          <div class="rule-title">Heartbeat capture</div>
+          <div class="rule-desc">Every ~10 turns: capture facts, refresh RECENT_CONTEXT.md, update SESSION-STATE if task shifted. No user signal needed — session is assumed always open.</div>
+          <div class="rule-src">→ rosepuppy heartbeat · Mem0 rolling summary</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head"><h2>Benchmark · CPU · VirtualBox</h2></div>
+    <div class="rules-block">
+      <div class="rules-block-head">Model Selection</div>
+      <div style="padding:11px 13px">
+        <table style="width:100%;font-size:11px">
+          <thead>
+            <tr style="border-bottom:1px solid var(--rule)">
+              <th style="text-align:left;font-weight:700;padding:0 0 5px;font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase">Semantic query</th>
+              <th style="text-align:center;font-weight:700;padding:0 8px 5px;font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase">gemma<br><span style="font-weight:300">600 MB</span></th>
+              <th style="text-align:center;font-weight:700;padding:0 0 5px;font-size:9px;color:var(--amber-d);letter-spacing:0.08em;text-transform:uppercase">nomic ✓<br><span style="font-weight:300">130 MB</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--rule)">
+              <td style="padding:5px 0;font-family:var(--mono);font-size:9.5px">database choice &amp; why</td>
+              <td style="text-align:center;padding:5px 8px"><span class="y" style="font-size:11px">✓</span></td>
+              <td style="text-align:center"><span class="y" style="font-size:11px">✓</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule)">
+              <td style="padding:5px 0;font-family:var(--mono);font-size:9.5px">user communication style</td>
+              <td style="text-align:center;padding:5px 8px"><span class="n">–</span></td>
+              <td style="text-align:center"><span class="y" style="font-size:11px">✓</span></td>
+            </tr>
+            <tr>
+              <td style="padding:5px 0;font-family:var(--mono);font-size:9.5px">auth token expiry</td>
+              <td style="text-align:center;padding:5px 8px"><span class="n">–</span></td>
+              <td style="text-align:center"><span class="y" style="font-size:11px">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:8px;line-height:1.6">
+          nomic: 3/3 recalled · ~1s faster per query · 470 MB smaller
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="f-left">Memento · OpenClaw Local Memory · Apache-2.0</div>
+  <div style="font-family:var(--mono);font-size:9.5px;color:var(--dim);text-align:right">
+    <a href="https://github.com/openclaw/openclaw">openclaw/openclaw</a> ·
+    <a href="https://arxiv.org/abs/2504.19413">Mem0 paper</a> ·
+    <a href="https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF">nomic GGUF</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>
