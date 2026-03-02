@@ -327,6 +327,15 @@ tail -f ~/.openclaw/openclaw.log | grep -i "embed\|memory\|llama\|index"
 
 ---
 
+## License
+
+Released under MIT license 
+
+Kudos to my brother Maurizio for the project name suggestion :)
+
+
+---
+
 ## References
 
 - [OpenClaw](https://github.com/openclaw/openclaw)
