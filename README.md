@@ -5,6 +5,11 @@ A fully local, zero-external-API persistent memory stack for
 embeddings, hybrid SQLite vector/BM25 search, and a five-principle agent
 protocol drawn from the rosepuppy skill and Mem0 research.
 
+<img width="1457" height="955" alt="Screenshot from 2026-03-02 18-22-11" src="https://github.com/user-attachments/assets/d4859823-5ade-48d7-86d5-ac9ade71f681" />
+<img width="1445" height="997" alt="Screenshot from 2026-03-02 18-21-58" src="https://github.com/user-attachments/assets/7718394c-8c84-48ae-b284-6d5047b65611" />
+
+
+
 > 📊 **[Architecture Infographic](docs/infographic.html)** — visual overview
 > of the full stack, write pipeline, and protocol rules.
 
