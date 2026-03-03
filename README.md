@@ -7,6 +7,9 @@ protocol drawn from the rosepuppy skill and Mem0 research.
 
 Memento gives OpenClaw a plug‑and‑play, fully local memory that works without any API keys. 
 
+**Important: Please be aware this is alpha development stage software!**
+**Suggestion: Install on a VM like VirtualBox and take a snapshot before the Memento installation so you can quickly restore if you need debugging** 
+
 Just run the one‑step install .sh, and the system: 
 - Automatically downloads the tiny Nomic embedding model
 - Configures openclaw.json
