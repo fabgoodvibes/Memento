@@ -19,6 +19,8 @@ After that you can:
 And most importantly since the agent reads and writes to this memory directly it can pull relevant context and answer questions in a smooth, conversational way.
 No external services, no complex setup, and everything stays private on your machine.
 
+_Please note: This was tested only on Ubuntu Linux 24.04, you may have to fix/debug dependencies if you are running a different Linux distribution_ 
+
 --- 
 
 ## Project description cards:
@@ -345,6 +347,13 @@ tail -f ~/.openclaw/openclaw.log | grep -i "embed\|memory\|llama\|index"
 
 ---
 
+## Author 
+
+Fabio Pedrazzoli Grazioli happily vibecoding with Claude.ai :)
+
+Contacts: https://linktr.ee/fabio108
+
+---
 ## License
 
 Released under MIT license 
