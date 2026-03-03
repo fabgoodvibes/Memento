@@ -5,6 +5,24 @@ A fully local, zero-external-API persistent memory stack for
 embeddings, hybrid SQLite vector/BM25 search, and a five-principle agent
 protocol drawn from the rosepuppy skill and Mem0 research.
 
+Memento gives OpenClaw a plug‑and‑play, fully local memory that works without any API keys. 
+
+Just run the one‑step install .sh, and the system: 
+- Automatically downloads the tiny Nomic embedding model
+- Configures openclaw.json
+- Adds a simple five‑step write‑ahead protocol to your existing SOUL.md. 
+
+After that you can:
+- Store, search, and retrieve facts instantly from cli with openclaw memory search "<query>" 
+- The built‑in memory-manager skill keeps the index tidy and handles compression for you 
+
+And most importantly since the agent reads and writes to this memory directly it can pull relevant context and answer questions in a smooth, conversational way.
+No external services, no complex setup, and everything stays private on your machine.
+
+--- 
+
+## Project description cards:
+
 <img width="1457" height="955" alt="Screenshot from 2026-03-02 18-22-11" src="https://github.com/user-attachments/assets/d4859823-5ade-48d7-86d5-ac9ade71f681" />
 <img width="1445" height="997" alt="Screenshot from 2026-03-02 18-21-58" src="https://github.com/user-attachments/assets/7718394c-8c84-48ae-b284-6d5047b65611" />
 
