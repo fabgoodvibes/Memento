@@ -17,7 +17,7 @@ Just run the one‑step install .sh, and the system:
 
 After that you can:
 - Store, search, and retrieve facts instantly from cli with openclaw memory search "<query>" 
-- The built‑in memory-manager skill keeps the index tidy and handles compression for you 
+- The `memory-manager` skill monitors compression risk and saves snapshots automatically
 
 And most importantly since the agent reads and writes to this memory directly it can pull relevant context and answer questions in a smooth, conversational way.
 No external services, no complex setup, and everything stays private on your machine.
@@ -48,7 +48,7 @@ _Please note: This was tested only on Ubuntu Linux 24.04, you may have to fix/de
 | **Hybrid search** | 70% vector + 30% BM25, 4× candidate pool | Best of both retrieval strategies |
 | **Embedding cache** | SQLite cache (up to 50 000 entries) | Unchanged chunks never re-embedded |
 | **Durability** | Pre-compaction memory flush | Agent writes notes before context compaction |
-| **Organisation** | `memory-manager` skill (episodic / semantic / procedural) | Three-tier structure + compression snapshots |
+| **Organisation** | `memory-manager` skill (compression monitoring) | `detect.sh` + `snapshot.sh` — three-tier routing is handled by Memento protocol |
 | **Plugin slot** | `memory-core` (native OpenClaw baseline) | `memory_search` + `memory_get` tools |
 | **Hot RAM** | `SESSION-STATE.md` | Instant re-orientation after crashes or restarts |
 | **Rolling summary** | `RECENT_CONTEXT.md` | Third retrieval channel, refreshed every ~10 turns |
@@ -82,7 +82,7 @@ coherent at write time — contradictions and duplicates never accumulate.
 
 - Ubuntu 24.04 (tested; should work on any Linux x64)
 - Node.js >= 22 — `node --version`
-- OpenClaw installed — `openclaw --version`
+- OpenClaw ≥ 2026.3.8 — `openclaw --version`
 - `pnpm` — installed in Step 1 below
 - `jq` — used by `memory-manager` scripts
 
